@@ -1,6 +1,8 @@
 const initialState ={
     countries: [],
-    allCountries: []
+    allCountries: [],
+    activities:[],
+    detail:{}
 }
 
 export default function rootReducer(state=initialState, action) {
@@ -32,17 +34,21 @@ export default function rootReducer(state=initialState, action) {
             }
 
         case 'ORDER_COUNTRIES':
-            let sortedArr = action.payload === 'asc' ? 
-            state.countries.sort(function(a,b) {
-                if(a.nombre > b.nombre) {
+            let sortearr2
+            let sortedArr = action.payload 
+            if(  sortedArr === 'asc')  { 
+            sortearr2=state.countries.sort(function(a,b) {
+
+                if(a.name > b.name) {
                     return 1;
                 }
-                if (b.nombre > a.nombre) {
+                if (b.name > a.name) {
                     return -1;
                 }
                 return 0;
-            }) : 
-            state.countries.sort(function(a, b) {
+            }) }else
+            if(sortedArr === 'des') {
+             sortearr2= state.countries.sort(function(a, b) {
                 if(a.name > b.name) {
                     return -1;
                 }
@@ -50,11 +56,31 @@ export default function rootReducer(state=initialState, action) {
                     return 1;
                 }
                 return 0;
-            })
+            })}else
+            if(sortedArr === 'population-+'){
+               sortearr2= state.countries.sort(function(a,b){
+                   return  a.polulation - b.population})
+            }else
+            if(sortedArr === 'population+-') {
+               sortearr2= state.countries.sort(function(a,b){
+                return b.population - a.population})
+            }
         return {
             ...state,
-            countries: sortedArr
+            countries: [...sortearr2]
         }
+        case "GET_DETAIL":
+            return{
+                ...state,
+                detail: action.payload
+            }
+
+        case "GET_ACTIVITIES":
+            
+            return{
+                ...state,
+                activities: action.payload
+            }
 
         default:
                 return state;

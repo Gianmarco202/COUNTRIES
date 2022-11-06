@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { postActivity, getCountries } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 

@@ -30,7 +30,14 @@ router.get('/:id', async(req, res) => {
         const {id} = req.params;
         //let pais =  await Countries.findByPK(id, {include: [{model: Actividades}]})
         
-        let country = await Countries.findByPk(id, {include: [{model: Activities}]})
+        let country = await Countries.findByPk(id, {
+            include: {
+                model: Activities,
+                attributes:['name'],
+                through:{
+                    attributes:[],
+                },
+            }})
         
         res.send(country)
 
@@ -45,7 +52,14 @@ router.get("/" , async(req, res) => {
     try {
         const {name} = req.query;
         console.log(name)
-        let country = await Countries.findAll({include: {model:Activities}})
+        let country = await Countries.findAll({
+            include: {
+                model: Activities,
+                attributes:['name'],
+                through:{
+                    attributes:[],
+                },
+            }})
         if(name) {
             let countryName = await country.filter( pais => pais.name.toLowerCase().includes(name.toLowerCase()))
             countryName.length ?

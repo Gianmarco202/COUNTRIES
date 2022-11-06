@@ -3,6 +3,18 @@ const {Countries, Activities} = require("../db")
 
 const router = Router();
 
+router.get("/all", async(req,res) =>{
+    const all = await Activities.findAll({
+        include: {
+            model: Countries,
+            attributes:['name','continent','flag'],
+            through:{
+                attributes:[],
+            },
+        }})
+    res.send(all)
+})
+
 router.post("/create", async (req, res) => {
     let {name, difficulty, duration, season, countries} = req.body;
     
@@ -15,20 +27,38 @@ router.post("/create", async (req, res) => {
             name, difficulty, duration, season
             })
         
-        let country = await Countries.findAll({where:  { id: countries}});
+        let country = await Countries.findAll({where:  { name: countries}});
         
         if(country){
             await createAct.addCountries(country);
         }
-        console.log(createAct)
         
+        const result =await Activities.findOne({
+            where:{name},
+            include:Countries
+        });
+        console.log(result)
 
-        res.send(createAct)
+
+        res.send(result)
 
     } catch (error) {
         console.log(error)
     }
 
+})
+
+router.get('/:id', async (req, res) => {
+    const id = req.params.id;
+    const result = await Activities.findByPk(id, {
+        include: {
+            model: Countries,
+            attributes:['name'],
+            through:{
+                attributes:[],
+            },
+        }})
+    res.send(result);
 })
 
 module.exports = router;

@@ -11,7 +11,6 @@ export function getCountries () {
 }
 
 export function filterCountries(payload) {
-    console.log(payload)
     return {
         type: 'FILTER_COUNTRIES',
         payload 
@@ -42,6 +41,36 @@ export function orderCountry(payload) {
     return {
         type: 'ORDER_COUNTRIES',
         payload
+    }
+}
+
+export function getDetail(id) {
+    try {
+        return async function(dispatch) {
+            var country = await axios.get(`http://localhost:3001/countries/${id}`);
+            
+            return dispatch ({
+                type: "GET_DETAIL",
+                payload: country.data
+                
+            })
+            
+        }
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export function getActivities(){
+    return async function(dispatch) {
+        var activity = await axios.get("http://localhost:3001/actividades/all")
+        console.log(activity.data)
+        return dispatch ({
+            type: "GET_ACTIVITIES",
+            payload: activity.data,
+            
+        })
     }
 }
 
