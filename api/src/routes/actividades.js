@@ -48,12 +48,12 @@ router.post("/create", async (req, res) => {
 
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/detail/:id', async (req, res) => {
     const id = req.params.id;
     const result = await Activities.findByPk(id, {
         include: {
             model: Countries,
-            attributes:['name'],
+            attributes:['name', 'flag', 'continent'],
             through:{
                 attributes:[],
             },

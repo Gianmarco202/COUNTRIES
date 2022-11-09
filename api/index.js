@@ -28,8 +28,8 @@ conn.sync({ force: true }).then(() => {
 
     const api = await axios.get("https://restcountries.com/v3/all")
         
-        const format = await api.data.map(pais=>{
-                    Countries.create({
+        api.data.map(async pais=>{
+                    await Countries.create({
                         id: pais.cca3,
                         name: pais.name.common, 
                         flag: pais.flags[1],

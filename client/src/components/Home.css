@@ -1,0 +1,48 @@
+.home {
+    background-image: url(../imagenes/imagen2.jpg);
+}
+
+.paises {
+    color : white;
+    font-size: 55px;
+    text-transform: uppercase;
+    letter-spacing: 7px
+    float right;
+    width: 30%;
+}
+
+.create{
+    text-decoration: none;
+}
+
+.inicio {
+    text-decoration: none;
+}
+
+.select {
+    float:  right;
+    width: 50%;
+}
+
+.box {
+    display: flex;
+    
+    flex-wrap: wrap;
+}
+
+.box-countries {
+    width: 98%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.box-countries:hover {
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.4);
+    transform: translateY(-3%);
+}
+.link {
+    text-decoration: none;
+    color: darkblue;
+    
+}
+

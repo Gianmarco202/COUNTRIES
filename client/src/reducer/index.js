@@ -22,7 +22,9 @@ export default function rootReducer(state=initialState, action) {
         
         case 'FILTER_COUNTRIES':
             const allCountries = state.allCountries
+        
             const continentFiltered = action.payload === 'All' ? allCountries : allCountries.filter(el => el.continent===action.payload)
+
             return {
                 ...state,
                 countries: continentFiltered
@@ -59,12 +61,24 @@ export default function rootReducer(state=initialState, action) {
             })}else
             if(sortedArr === 'population-+'){
                sortearr2= state.countries.sort(function(a,b){
-                   return  a.polulation - b.population})
-            }else
+                if(a.population > b.population) {
+                    return 1;
+                }
+                if (b.population > a.population) {
+                    return -1;
+                }
+                return 0;   
+            })}else
             if(sortedArr === 'population+-') {
                sortearr2= state.countries.sort(function(a,b){
-                return b.population - a.population})
-            }
+                if(a.population > b.population) {
+                    return -1;
+                }
+                if (b.population > a.population) {
+                    return 1;
+                }
+                  return 0;
+            })}
         return {
             ...state,
             countries: [...sortearr2]
@@ -80,6 +94,12 @@ export default function rootReducer(state=initialState, action) {
             return{
                 ...state,
                 activities: action.payload
+            }
+        case "GET_ACTIVITY_DATA":
+        
+            return{
+                ...state,
+                activityDetail: action.payload
             }
 
         default:
