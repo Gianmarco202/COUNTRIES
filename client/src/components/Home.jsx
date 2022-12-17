@@ -121,6 +121,7 @@ export default function Home(){
             countriesPorPage={countriesPorPage}
             allCountries={countries?.length}
             paginado= {paginado}
+            currentPage ={currentPage}
             />
             {console.log(countries, 'countries')}
 

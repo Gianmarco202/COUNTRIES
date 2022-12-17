@@ -1,7 +1,7 @@
 import React from "react";
 import "./Paginado.css";
 
-export default function Paginado({countriesPorPage, allCountries, paginado}){
+export default function Paginado({countriesPorPage, allCountries, paginado, currentPage}){
     const  pageNumbers = []
 
     for( let i=1; i<=Math.ceil(allCountries/countriesPorPage); i++) {
@@ -11,14 +11,16 @@ export default function Paginado({countriesPorPage, allCountries, paginado}){
 
     return(
       <nav>
-        <ul className='paginado'>
-            {   pageNumbers&&
-                pageNumbers.map(number => (
-                    <li className="number" key={number}>
-                        <a onClick={() => paginado(number)}>{number}</a>
-                    </li>
-            ))}
-        </ul>
+        <div className='paginado'>
+            {   
+                pageNumbers.map((number,index) => {
+                     return ( 
+                        <button key={index} onClick={() => paginado(number)} className=
+                        {number == currentPage ? 'active' : ''} >{number}
+                        </button>
+                     )
+                })}
+        </div>
       </nav>
     )
 }

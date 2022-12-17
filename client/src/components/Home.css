@@ -1,5 +1,5 @@
 .home {
-    background-image: url(../imagenes/imagen2.jpg);
+    background-image: url(../imagenes/imagen4.jpg);
 }
 
 .paises {
@@ -9,6 +9,9 @@
     letter-spacing: 7px
     float right;
     width: 30%;
+}
+.navbar {
+    color: white;
 }
 
 .create{
@@ -42,7 +45,7 @@
 }
 .link {
     text-decoration: none;
-    color: darkblue;
+    color: white;
     
 }
 

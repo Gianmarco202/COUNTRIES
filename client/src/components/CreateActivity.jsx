@@ -16,28 +16,48 @@ export default function CreateActivity() {
         countries:[]
     })
 
+    const [error, setError] = useState({
+    })
+
     function handleChange(e){
         setInput({
             ...input,
             [e.target.name] : e.target.value
         })
-        console.log(input)
+        
     }
 
-    const validate = (e) => {
-        const expresiones = {
-            nombre: /^[a-zA-Z ]+$/,
+    const validate = () => {
+        let error = {};
+        let regexName = /^[a-zA-Z ]+$/;
+        let regexDifficulty = /^[1-5]+$/;
 
+        if(!input.name.trim()){
+            error.name ="El campo 'Nombre' es requerido";
+        }else if(!regexName.test(input.name.trim())){
+            error.name = "Solo se acepta letras"
         }
-        switch(e.target.name) {
-            case "name":
-                if(expresiones.nombre.test(e.target.value)){
 
-                }else {
-                    document.getElementById('grupo-name').classList.add('formulario-incorrecto')
-                }
-            break;
+        if(!input.difficulty.trim()){
+            error.difficulty ="El campo '' es requerido";
+        }else if(!regexDifficulty.test(input.difficulty.trim())){
+            error.difficulty = "Elija un rango entre 1-5"
         }
+
+        if(!input.duration.trim()){
+            error.duration ="El campo ''Duracion' debe ser en hrs"
+        }
+
+        if(!input.season.trim()){
+            error.season ="El campo 'Temporada' es requerido"
+        }
+        return error;
+        
+     } 
+
+    let styles = {
+        fontWeight: "bold",
+        color:"#dc3545"
     }
 
     function handleSelect(e, inputName) {
@@ -55,9 +75,14 @@ export default function CreateActivity() {
         }
     } 
 
+    const handleBlur = (e) => {
+        handleChange(e)
+        setError(validate(input))
+    }
+
     function handleSubmit(e){
         e.preventDefault();
-        validate()
+        setError(validate(input))
         dispatch(postActivity(input))
         alert("Actividad Creada")
         setInput({
@@ -70,7 +95,7 @@ export default function CreateActivity() {
         })
     }
 
-    
+     
     useEffect(() => {
         dispatch(getCountries());
     }, []);
@@ -84,31 +109,35 @@ export default function CreateActivity() {
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
             <div>
 
-                <div className="formulario formulario-incorrecto" id="grupo-name" >
-                    <label className="formulario-label"  for="name">Nombre:</label>
+                <div  id="grupo-name" >
+                    <label  for="name">Nombre:</label>
                   <div className="formulario-input">
-                    <input className="formulario_input" type='text' value={input.name} name='name' id="name" placeholder="Nombre" onChange={handleChange}/>
+                    <input type='text' value={input.name} name='name' id="name" placeholder="Nombre" onBlur={handleBlur} onChange={handleChange} required/>
                   </div>
-                  <p className="input-error">Debe contener solo letras</p>
+                  {error.name && <p style={styles}>{error.name}</p>}
                 </div>
+                <br/>
 
-                <div className="formulario formulario-incorrecto" id="grupo-difficulty">
-                    <label className="formulario-label" for="difficulty">Dificultad:</label>
-                  <div className="formulario-input">
-                    <input className="formulario_input" type='number' value={input.difficulty} id="difficulty" name='difficulty' placeholder="Dificultad" onChange={handleChange} ></input>
+                <div  id="grupo-difficulty">
+                    <label for="difficulty">Dificultad:</label>
+                  <div>
+                    <input  type='number' value={input.difficulty} id="difficulty" name='difficulty' placeholder="Dificultad" onBlur={handleBlur} onChange={handleChange} required ></input>
                   </div>
-                  <p className="input-error">Debe ser entre un rango de 1-5</p>
+                  {error.difficulty && <p style={styles}>{error.difficulty}</p>}
                 </div>
+                <br/>
 
-                <div className="formulario formulario-incorrecto" id="grupo-duration ">  
-                    <label className="formulario-label" for="duration">Duracion:</label>
-                <div className="formulario-input">
-                    <input className="formulario_input" type='number' value={input.duration} id="duration" name='duration' placeholder="Duración(hrs)" onChange={handleChange}/>
+                <div  id="grupo-duration ">  
+                    <label  for="duration">Duracion:</label>
+                <div >
+                    <input  type='number' value={input.duration} id="duration" name='duration' placeholder="Duración(hrs)" onBlur={handleBlur} onChange={handleChange} required/>
                 </div>
-                  <p className="input-error">Debe ser en horas</p>
+                {error.duration && <p style={styles}>{error.duration}</p>}
                 </div>
+                <br/>
+
                 <div>
-                    <label className="formulario-label">Temporada:</label>
+                    <label >Temporada:</label>
                     <select onChange={(e) => handleSelect(e,"season")}>
                         <option>----</option>
                         <option value="Verano">Verano</option>
@@ -117,13 +146,17 @@ export default function CreateActivity() {
                         <option value="Primavera">Primavera</option>
                     </select>
                 </div>
+                <br/>
+
                 <label>Selecciona el pais(es):</label><br/>
                 <select onChange={(e) => handleSelect(e, "countries")}>
                     {countries.map((country) => (
                         <option value={country.name}>{country.name}</option>
                         ))}
                 </select>
-                <br></br>
+                <br/>
+                <br/>
+
                 <button className="formulario-button" type="submit">Crear</button>
            </div>
             </form>
